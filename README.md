@@ -36,4 +36,4 @@ If you are interested in playing around with the code yourself, feel free to for
 4. `yarn start`
 5. In a separate terminal window, `npx tailwindcss -i ./src/stylesheets/tailwind.css -o ./public/output.css --watch` // this is to make sure the Tailwind output is compiled correctly
 
-Or you could just fork it on CodeSandbox I think.
+Unfortunately, you can't fork it directly on CodeSandbox because even though the original version is a CodeSandbox container, when you fork it, you end up with a client environment instead. You can preview the thing up there though.
