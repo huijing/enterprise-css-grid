@@ -1,0 +1,155 @@
+
+// =============================================================================
+// SETTINGS - Defining standard values to ensure consistency
+// =============================================================================
+@import 'variables';
+
+// =============================================================================
+// Generic styles, high-level and far reaching, affects a lot of the DOM
+// =============================================================================
+@import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@900&family=Cinzel:wght@500&family=Poppins:wght@300&display=swap');
+
+:root {
+  --base-font-stack: 'Poppins', Helvetica, Arial, sans-serif;
+  --bg-colour: #00403A;
+  --txt-colour: #CFBA86;
+
+  /* @link https://utopia.fyi/type/calculator?c=320,16,1.25,1600,20,1.414,5,0,&s=0.75|0.5|0.25,1.5|2|3|4|6,s-l */
+  --fluid-min-width: 320;
+  --fluid-max-width: 1600;
+  --fluid-screen: 100vw;
+  --fluid-bp: calc(
+    (var(--fluid-screen) - var(--fluid-min-width) / 16 * 1rem) /
+      (var(--fluid-max-width) - var(--fluid-min-width))
+  );
+
+  --f--1-min: 12.80;
+  --f--1-max: 14.14;
+  --step--1: calc(
+    ((var(--f--1-min) / 16) * 1rem) + (var(--f--1-max) - var(--f--1-min)) *
+      var(--fluid-bp)
+  );
+
+  --f-0-min: 16.00;
+  --f-0-max: 20.00;
+  --step-0: calc(
+    ((var(--f-0-min) / 16) * 1rem) + (var(--f-0-max) - var(--f-0-min)) *
+      var(--fluid-bp)
+  );
+
+  --f-1-min: 20.00;
+  --f-1-max: 28.28;
+  --step-1: calc(
+    ((var(--f-1-min) / 16) * 1rem) + (var(--f-1-max) - var(--f-1-min)) *
+      var(--fluid-bp)
+  );
+
+  --f-2-min: 25.00;
+  --f-2-max: 39.99;
+  --step-2: calc(
+    ((var(--f-2-min) / 16) * 1rem) + (var(--f-2-max) - var(--f-2-min)) *
+      var(--fluid-bp)
+  );
+
+  --f-3-min: 31.25;
+  --f-3-max: 56.54;
+  --step-3: calc(
+    ((var(--f-3-min) / 16) * 1rem) + (var(--f-3-max) - var(--f-3-min)) *
+      var(--fluid-bp)
+  );
+
+  --f-4-min: 39.06;
+  --f-4-max: 79.95;
+  --step-4: calc(
+    ((var(--f-4-min) / 16) * 1rem) + (var(--f-4-max) - var(--f-4-min)) *
+      var(--fluid-bp)
+  );
+
+  --f-5-min: 48.83;
+  --f-5-max: 113.05;
+  --step-5: calc(
+    ((var(--f-5-min) / 16) * 1rem) + (var(--f-5-max) - var(--f-5-min)) *
+      var(--fluid-bp)
+  );
+}
+
+@media screen and (min-width: 1600px) {
+  :root {
+    --fluid-screen: calc(var(--fluid-max-width) * 1px);
+  }
+}
+
+// Remove user-agent styles except display
+// borrowed from The new CSS Reset - version 1.2.0
+*:where(:not(iframe, canvas, img, svg, video, a, button):not(svg *)) {
+  all: unset;
+  display: revert;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  height: 100%;
+}
+
+body {
+  font-family: var(--base-font-stack);
+  font-size: var(--step--1);
+  min-height: 100%;
+}
+
+main {
+  background-color: var(--bg-colour);
+  color: var(--txt-colour);
+  padding: 1em;
+  min-height: 100%;
+}
+
+// =============================================================================
+// Element styles, low-specificity sensible defaults, minimally opinionated
+// =============================================================================
+button {
+  border: none;
+  font-size: inherit;
+  font-family: var(--base-font-stack);
+  cursor: pointer;
+  touch-action: manipulation;
+  background-color: unset;
+  padding: 0;
+}
+
+img {
+  max-width: 100%;
+}
+
+ol,
+ul {
+  list-style: none;
+}
+
+ol {
+  counter-reset: revert;
+}
+
+// Revert the 'white-space' property for textarea elements on Safari
+textarea {
+  white-space: revert;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+a {
+  color: var(--txt-colour);
+  text-decoration: none;
+}
+
+// =============================================================================
+// LAYOUT - Shared styles for layout elements
+// =============================================================================
+@import 'grid';

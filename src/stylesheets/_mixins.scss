@@ -1,0 +1,50 @@
+@use 'sass:math';
+@import 'variables';
+@import 'functions';
+
+// =============================================================================
+// Breakpoint-related mixins
+// =============================================================================
+@mixin breakpoint(
+  $queries,
+  $type: all,
+  $query-fallback: null,
+  $breakpoints: $breakpoints
+) {
+  $helper-map: breakpoint($queries, $type, $query-fallback, $breakpoints);
+
+  @media #{map-get($helper-map, type)} and #{map-get($helper-map, media-string)} {
+    @content;
+  }
+
+  @if $query-fallback {
+    #{$query-fallback} & {
+      @content;
+    }
+  }
+}
+
+// =============================================================================
+// Layout-related mixins
+// =============================================================================
+@mixin center($max-width: initial) {
+  max-width: $max-width;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+// =============================================================================
+// User-preference mixins
+// =============================================================================
+@mixin prefers-reduced-motion() {
+  @media screen and (prefers-reduced-motion: reduce) {
+    @content;
+  }
+}
+
+@mixin remove-motion() {
+  @media screen and (prefers-reduced-motion: reduce) {
+    transition: none;
+    animation: none;
+  }
+}

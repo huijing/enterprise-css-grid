@@ -1,0 +1,227 @@
+// =============================================================================
+// Functions for calculating CSS units
+// =============================================================================
+@use 'sass:math';
+@use 'sass:string';
+@use 'sass:list';
+@use 'sass:map';
+
+@function strip-units($value) {
+  @return (math.div($value, ($value * 0 + 1)));
+}
+
+@function _em($pxval, $base) {
+  @if not unitless($pxval) {
+    $pxval: strip-units($pxval);
+  }
+
+  @if not unitless($base) {
+    $base: strip-units($base);
+  }
+
+  @return (math.div($pxval, $base)) * 1em;
+}
+
+@function em($pxval, $base: 16px) {
+  @return _em($pxval, $base);
+}
+
+@function rem($pxval, $base: 16px) {
+  @return strip-units(em($pxval, $base)) * 1rem;
+}
+
+// =============================================================================
+// Functions for breakpoint management
+// =============================================================================
+/// Creates a helper map used in the breapoint mixin
+/// @param {string} $queries - Space delimited strings (keywords or CSS values) of queries
+/// @param {string} $type - Media type (https://www.w3.org/TR/mediaqueries-4/#media-types)
+/// @param {string} $query-fallback - Generate a class for fallback styles
+/// @return {map} Returns a map with breakpoint information
+@function breakpoint(
+  $queries,
+  $type: all,
+  $query-fallback: null,
+  $breakpoints: $breakpoints
+) {
+  $media-string: ();
+  $_return: ();
+  $media-map: parse-bp($queries, $breakpoints);
+
+  @each $key, $value in $media-map {
+    @if $value and $value != 0 {
+      @if $media-string == (()) {
+        $media-string: list.append(
+          $media-string,
+          string.unquote('(#{$key}: #{$value})')
+        );
+      } @else {
+        $media-string: list.append(
+          $media-string,
+          string.unquote('and (#{$key}: #{$value})')
+        );
+      }
+    }
+  }
+  $_return: (
+    type: $type,
+    media-string: implode($media-string),
+    query-fallback: $query-fallback,
+  );
+
+  @return $_return;
+}
+
+/// Parse arguments to return a map of media queries
+/// @param {string|number} $queries
+/// @param {map} $breakpoints
+/// @return {map} $_return
+@function parse-bp($queries, $breakpoints) {
+  $_return: ();
+  $_i: 1;
+  $_minw: null;
+  $_maxw: null;
+  $_minh: null;
+  $_maxh: null;
+  $_length: list.length($queries);
+  $_minw: list.nth($queries, 1);
+  $_minw: validate-map($_minw, $breakpoints);
+
+  // Check for min width queries
+  @if $_minw {
+    $_minw: em($_minw);
+    $_return: map.merge(
+      $_return,
+      (
+        min-width: $_minw,
+      )
+    );
+    $queries: list.set-nth($queries, 1, null);
+  }
+
+  // Check for the existence of max width query
+  @if $_minw and $_length >= 2 {
+    $_maxw: list.nth($queries, 2);
+    $_maxw: validate-map($_maxw, $breakpoints);
+  }
+
+  @if $_maxw {
+    $_maxw: em($_maxw - 1px);
+    $_return: map.merge(
+      $_return,
+      (
+        max-width: $_maxw,
+      )
+    );
+    $queries: list.set-nth($queries, 2, null);
+  }
+
+  $_h: list.index($queries, h) or list.index($queries, height);
+
+  @if $_h {
+    $_minh: list.nth($queries, $_h + 1);
+    $_minh: validate-map($_minh, $breakpoints);
+
+    // Check for min height queries
+    @if $_minh {
+      $_minh: em($_minh);
+      $_return: map.merge(
+        $_return,
+        (
+          min-height: $_minh,
+        )
+      );
+      $queries: list.set-nth($queries, $_h + 1, null);
+    }
+
+    // Checks for the existence of max height query
+    @if $_length - $_h >= 2 {
+      $_maxh: list.nth($queries, $_h + 2);
+      $_maxh: validate-map($_maxh, $breakpoints);
+    }
+
+    @if $_maxh {
+      $_maxh: em($_maxh - 1px);
+      $_return: map.merge(
+        $_return,
+        (
+          max-height: $_maxh,
+        )
+      );
+      $queries: list.set-nth($queries, $_h + 2, null);
+    }
+    // Reset h marker
+    $queries: list.set-nth($queries, $_h, null);
+  }
+
+  // Checks for existence of other queries
+  @while $_i <= list.length($queries) {
+    $_key: list.nth($queries, $_i);
+
+    @if $_key and $_length - $_i >= 1 {
+      $_val: list.nth($queries, $_i + 1);
+      $_return: map.merge($_return, (#{$_key}: $_val));
+      $queries: list.set-nth($queries, $_i, null);
+      $queries: list.set-nth($queries, $_i + 1, null);
+    } @else if $_key {
+      @warn string.unquote('"Missing value for media feature "#{$_key}""');
+    }
+    $_i: $_i + 1;
+  }
+
+  @return $_return;
+}
+
+/// Validates if query fulfils one of the following conditions:
+/// - Is a key in the $breakpoints map
+/// - Is a number
+/// - Is a string that matches 'max', 'max-width' or 'max-height'
+/// @param {string|number} $query
+/// @param {map} $breakpoints
+/// @return {string} $_return
+@function validate-map($query, $breakpoints) {
+  $_return: null;
+
+  @if map-has-key($breakpoints, $query) {
+    $_return: map.get($breakpoints, $query);
+  } @else if type-of($query) == number {
+    $_return: $query;
+  } @else if $query == 'max' or $query == 'max-height' or $query == 'max-width'
+  {
+    $_return: 0;
+  } @else {
+    $_return: null;
+  }
+
+  @return $_return;
+}
+
+/// Merges a list into a string
+/// @param {list} $list
+/// @param {string} $glue
+/// @return {string} $res
+@function implode($list, $glue: ' ') {
+  $res: null;
+  $len: list.length($list);
+
+  @for $i from 1 through $len {
+    $e: list.nth($list, $i);
+    @if $i == $len {
+      $res: string.unquote('#{$res}#{$e}');
+    } @else {
+      $res: string.unquote('#{$res}#{$e}#{$glue}');
+    }
+  }
+  @return $res;
+}
+
+// =============================================================================
+// Functions to get properties from respective Sass maps
+// =============================================================================
+@function get-colour($colour, $map: $colours) {
+  @return map-get($colours, $colour);
+}
+
+@function get-z-index($z-index, $map: $z-indexes) {
+  @return map-get($z-indexes, $z-index);
+}

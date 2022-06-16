@@ -1,0 +1,24 @@
+{
+  "heading": "Moomoo Luxury Hotels",
+  "image": {
+    "src": "mmm.jpg",
+    "alt": "4 hotel staff at the front desk"
+  },
+  "navLinks": [
+    {
+      "content": "Experience",
+      "href": "#"
+    },
+    {
+      "content": "Stay",
+      "href": "#"
+    },
+    {
+      "content": "Events & Weddings",
+      "href": "#"
+    }
+  ],
+  "subhead": "Moomoo Luxury Hotels is a collection of the finest independent luxury hotels in The Seven Isles. Find out more!",
+  "details1": "Glorious views of the crystal-clear waters of the Great Eastern Ocean come as standard in all of our five-star hotels and luxury villas. Alongside stunning seaside locations, effortlessly elegant interiors and impeccable service – including the assistance of our knowledgeable concierges – you can look forward to a stylish selection of destination bars and restaurants, luxury spas, boutiques, and even a PADI dive centre.",
+  "details2": "Our suites of contemporary conference centres are both impressive and flexible. Plush interior design, swathes of natural sunlight and picture – perfect panoramas of the sea make them just as popular a choice for weddings and other tailor-made events as for business. Book your holiday or event with us – and check our special offers – to experience the very best the The Seven Isles has to offer. Send us a pigeon to find out more."
+}
