@@ -1,4 +1,5 @@
 import { ReactNode, createElement } from "react";
+import styles from "./Grid.module.scss";
 
 interface GridProps extends React.HTMLProps<HTMLElement> {
   className?: string;
@@ -16,7 +17,7 @@ export default function Grid({
   return createElement(
     Wrapper,
     {
-      className: `l-grid ${className}`,
+      className: `${styles.grid} ${className}`,
       ...props
     },
     children

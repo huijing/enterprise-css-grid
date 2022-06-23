@@ -1,5 +1,6 @@
 import { ReactNode, createElement } from "react";
 import cn from "classnames";
+import styles from "./Col.module.scss";
 
 interface ColProps extends React.HTMLProps<HTMLElement> {
   className?: string;
@@ -20,7 +21,7 @@ export default function Col({
   return createElement(
     Wrapper,
     {
-      className: cn({ [`l-grid__item--${colWidth}`]: colWidth }, className),
+      className: cn(className, { [styles[`${colWidth}`]]: colWidth }),
       ...props
     },
     children
