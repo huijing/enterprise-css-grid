@@ -26,7 +26,7 @@ export default function TwHero({
   return (
     <>
       <section className="tw-grid xs:tw-grid-cols-4 sm:tw-grid-cols-8 md:tw-grid-cols-12 xs:tw-gap-3 lg:tw-gap-4 xs:tw-mx-3 sm:tw-mx-[30px] md:tw-mx-[50px] lg:tw-mx-[90px] xl:tw-mx-[180px] md:tw-grid-rows-[var(--step-5)_var(--step-5)_55vh_repeat(3,_min-content)] tw-transform-style-3d">
-        <h1 className="tw-font-cinzeldeco tw-text-step-5 tw-leading-[1.2] tw-text-center tw-txt-shadow tw-col-span-full tw-row-start-1 tw-row-end-3">
+        <h1 className="tw-font-cinzeldeco tw-text-step-5 tw-leading-[1.2] tw-text-center tw-txt-shadow tw-col-span-full lg:tw-col-start-2 lg:tw-col-end-[-2] tw-row-start-1 tw-row-end-3">
           {heading}
         </h1>
         <img
