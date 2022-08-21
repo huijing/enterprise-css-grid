@@ -3,7 +3,7 @@ interface TextLink {
   href: string;
 }
 
-interface HeroProps {
+interface TwProps {
   heading: string;
   image: {
     src: string;
@@ -15,14 +15,14 @@ interface HeroProps {
   details2: string;
 }
 
-export default function TwHero({
+export default function TwStyles({
   heading,
   image,
   navLinks,
   subhead,
   details1,
   details2
-}: HeroProps) {
+}: TwProps) {
   return (
     <>
       <section className="tw-grid xs:tw-grid-cols-4 sm:tw-grid-cols-8 md:tw-grid-cols-12 xs:tw-gap-3 lg:tw-gap-4 xs:tw-mx-3 sm:tw-mx-[30px] md:tw-mx-[50px] lg:tw-mx-[90px] xl:tw-mx-[180px] md:tw-grid-rows-[var(--step-5)_var(--step-5)_55vh_repeat(3,_min-content)] tw-transform-style-3d">

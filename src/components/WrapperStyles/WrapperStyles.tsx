@@ -7,7 +7,7 @@ interface TextLink {
   href: string;
 }
 
-interface HeroProps {
+interface WrapperStylesProps {
   heading: string;
   image: {
     src: string;
@@ -19,14 +19,14 @@ interface HeroProps {
   details2: string;
 }
 
-export default function Hero({
+export default function WrapperStyles({
   heading,
   image,
   navLinks,
   subhead,
   details1,
   details2
-}: HeroProps) {
+}: WrapperStylesProps) {
   return (
     <>
       <Grid className={styles.section} tag="section">

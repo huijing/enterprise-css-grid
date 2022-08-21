@@ -6,7 +6,7 @@ interface TextLink {
   href: string;
 }
 
-interface HeroProps {
+interface ComponentStylesProps {
   heading: string;
   image: {
     src: string;
@@ -18,14 +18,14 @@ interface HeroProps {
   details2: string;
 }
 
-export default function Hero({
+export default function ComponentStyles({
   heading,
   image,
   navLinks,
   subhead,
   details1,
   details2
-}: HeroProps) {
+}: ComponentStylesProps) {
   return (
     <>
       <section className={cn("l-grid", styles.section)}>
